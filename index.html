@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>卒店式 アンケート集計</title>
+</head>
+
+<style>
+    body {
+        background-color: #c6dfc6;
+    }
+
+    .status {
+        background-color: #a5cbf7;
+        text-align: right;
+        font-size: 35px;
+    }
+</style>
+
+<body>
+
+    <div class="status">
+        <b>フォレオ大津一里山店 卒店式　リアルタイムアンケート集計システム</b>
+        <p id="now_time"></p>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    setInterval(() => {
+    document.getElementById("now_time").innerHTML = showTime();
+    }, 1000);
+    
+    function showTime() {
+	    var now = new Date();
+	    var res = "" + now.getFullYear() + "/" + padZero(now.getMonth() + 1) + 
+		"/" + padZero(now.getDate()) + " " + padZero(now.getHours()) + ":" + 
+		padZero(now.getMinutes()) + ":" + padZero(now.getSeconds());
+	    return res;
+    }
+
+    function padZero(num) {
+	    var result;
+	    if (num < 10) {
+		    result = "0" + num;
+	    } else {
+		    result = "" + num;
+	    }
+	    return result;
+    }
+</script>
+
+</html>
