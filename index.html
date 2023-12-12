@@ -6,6 +6,33 @@
     <title>卒店式 アンケート集計</title>
 </head>
 
+<script type="text/javascript">
+
+    function submit_Button_Click(){
+        //alert('Click');
+    }
+
+    setInterval(() => {
+    document.getElementById("now_time").innerHTML = showTime();
+    }, 1000);
+    
+    function showTime() {
+	    var now = new Date();
+	    var res = "" + now.getFullYear() + "/" + padZero(now.getMonth() + 1) + 
+		"/" + padZero(now.getDate()) + " " + padZero(now.getHours()) + ":" + 
+		padZero(now.getMinutes()) + ":" + padZero(now.getSeconds());
+	    return res;
+    } function padZero(num) {
+	    var result;
+	    if (num < 10) {
+		    result = "0" + num;
+	    } else {
+		    result = "" + num;
+	    }
+	    return result;
+    }
+</script>
+
 <style>
     @font-face {
         font-family: "チョーク体";
@@ -28,6 +55,7 @@
         font-weight: bold;
         text-align: center;
         word-break: normal;
+        padding: 30px 0;
         background:#0B614B;
         color:#fff;
         border:20px ridge chocolate;
@@ -37,15 +65,15 @@
         position: relative;
         font-weight: bold;
         font-size: 50px;
-        width: 800px;
-        height: 300px;
-        margin: 120px auto 150px auto;
+        width: 840px;
+        height: 270px;
+        margin: 110px auto 150px auto;
         } input {
             box-sizing: border-box;
             font-size: 60px;
             text-align: center;
-            width: 800px;
-            height: 300px;
+            width: 840px;
+            height: 270px;
             padding: 10px 0 10px 15px;
             border-radius: 3px;
             border: 1px solid #00a5a0;
@@ -89,14 +117,14 @@
         text-decoration: none;
         font-size: 60px;
         font-weight: bold;
-        border: 4px solid #f7c100;
+        border: 4px solid #f39800;
         padding: 1em 2em;
+        margin: 0 auto 200px auto;
         text-align: center;
         position: relative;
-        margin: 0 auto;
         background-position: 100% 0;
         background-size: 200% auto;
-        background-image: linear-gradient(to right, #fff 0%, #fff 50%, #f7c100 50%, #f7c100 100%);
+        background-image: linear-gradient(to right, #fff 0%, #fff 50%, #f39800 50%, #f39800 100%);
         transition: background-position .8s cubic-bezier(0.19, 1, 0.22, 1);
         -webkit-transition: background-position .8s cubic-bezier(0.19, 1, 0.22, 1);
     } .background_btn02:hover {
@@ -118,7 +146,7 @@
     </div>
 
     <div class="question_area">
-        <p id="question"></p>ランナーと<br>プレゼンターの<br>組み合わせ(コンビ)で<br>最も相性が良いのは<br>誰と誰？</p>
+        現在準備中です．<br>
     </div>
 
     <div class="textbox">
@@ -130,32 +158,5 @@
         <span>送信</span>
     </a>
 </body>
-
-<script type="text/javascript">
-
-    function submit_Button_Click(){
-        //alert('Click');
-    }
-
-    setInterval(() => {
-    document.getElementById("now_time").innerHTML = showTime();
-    }, 1000);
-    
-    function showTime() {
-	    var now = new Date();
-	    var res = "" + now.getFullYear() + "/" + padZero(now.getMonth() + 1) + 
-		"/" + padZero(now.getDate()) + " " + padZero(now.getHours()) + ":" + 
-		padZero(now.getMinutes()) + ":" + padZero(now.getSeconds());
-	    return res;
-    } function padZero(num) {
-	    var result;
-	    if (num < 10) {
-		    result = "0" + num;
-	    } else {
-		    result = "" + num;
-	    }
-	    return result;
-    }
-</script>
 
 </html>
