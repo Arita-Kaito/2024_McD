@@ -6,33 +6,6 @@
     <title>卒店式 アンケート集計</title>
 </head>
 
-<script type="text/javascript">
-
-    function submit_Button_Click(){
-        alert('Click');
-    }
-
-    setInterval(() => {
-    document.getElementById("now_time").innerHTML = showTime();
-    }, 1000);
-    
-    function showTime() {
-	    var now = new Date();
-	    var res = "" + now.getFullYear() + "/" + padZero(now.getMonth() + 1) + 
-		"/" + padZero(now.getDate()) + " " + padZero(now.getHours()) + ":" + 
-		padZero(now.getMinutes()) + ":" + padZero(now.getSeconds());
-	    return res;
-    } function padZero(num) {
-	    var result;
-	    if (num < 10) {
-		    result = "0" + num;
-	    } else {
-		    result = "" + num;
-	    }
-	    return result;
-    }
-</script>
-
 <style>
     @font-face {
         font-family: "チョーク体";
@@ -142,11 +115,10 @@
     <div class="status">
         <b>フォレオ大津一里山店 卒店式</b><br>
         <b>リアルタイムアンケート集計システム</b>
-        <p id="now_time"></p>
     </div>
 
     <div class="question_area">
-        現在準備中です．<br>
+        <br><br><!--クイズ内容-->
     </div>
 
     <div class="textbox">
@@ -158,5 +130,58 @@
         <span>送信</span>
     </a>
 </body>
+
+<script type="text/javascript">
+
+    function submit_Button_Click(){
+        alert('Click');
+    }
+
+    setInterval(() => {
+        var Question_Data = "https://script.google.com/macros/s/AKfycbxNCGIPO9cEiDcqUhY9Fyp7ct3HkPsD0NoETqmIo6d1PGzZRl4ZKFaR6PmhVrteaW8X3Q/exec";
+        fetch(Question_Data)
+        .then((response) => response.json())
+        .then((data) => {
+            Question_Data = data;
+            console.log(Question_Data[Question_Data["Show_No"]]);
+
+            document.getElementsByClassName("question_area")[0].textContent = Question_Data[Question_Data["Show_No"]];
+        })
+        .catch((error) => {
+            console.log("接続不可．");
+        });
+    }, 5000);
+    
+
+    var Question_Data = "https://script.google.com/macros/s/AKfycbxNCGIPO9cEiDcqUhY9Fyp7ct3HkPsD0NoETqmIo6d1PGzZRl4ZKFaR6PmhVrteaW8X3Q/exec";
+    fetch(Question_Data)
+    .then((response) => response.json())
+    .then((data) => {
+        Question_Data = data;
+        console.log(Question_Data[Question_Data["Show_No"]]);
+
+        document.getElementsByClassName("question_area")[0].textContent = Question_Data[Question_Data["Show_No"]];
+    })
+    .catch((error) => {
+        console.log("接続不可．");
+    });
+    
+    
+    function showTime() {
+	    var now = new Date();
+	    var res = "" + now.getFullYear() + "/" + padZero(now.getMonth() + 1) + 
+		"/" + padZero(now.getDate()) + " " + padZero(now.getHours()) + ":" + 
+		padZero(now.getMinutes()) + ":" + padZero(now.getSeconds());
+	    return res;
+    } function padZero(num) {
+	    var result;
+	    if (num < 10) {
+		    result = "0" + num;
+	    } else {
+		    result = "" + num;
+	    }
+	    return result;
+    }
+</script>
 
 </html>
