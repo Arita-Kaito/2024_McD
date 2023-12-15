@@ -218,12 +218,12 @@ var number;
         .then((response) => response.json())
         .then((data) => {
             Question_Data = data;
-            if(number != Question_Data["Show_No"]){
-                 closeModalWindow(); 
-            }else if(number == 1){
-                //document.getElementsByClassName("msg").innerHTML = "現在実施中のクイズはありません．";
-            }
             number = Question_Data["Show_No"];
+            if(number == "1"){
+                document.getElementsByClassName("inner").innerHTML = "現在実施中のクイズはありません．";
+            }else if(number != Question_Data["Show_No"]){
+                 closeModalWindow(); 
+            }
             document.getElementsByClassName("question_area")[0].textContent = Question_Data[Question_Data["Show_No"]];
         });
     }, 5000);
