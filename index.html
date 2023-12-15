@@ -115,7 +115,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.507);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -147,7 +147,6 @@
 
     <div class="status">
         <b>フォレオ大津一里山店 卒店式</b><br>
-        <b>リアルタイムアンケート集計システム</b>
     </div>
 
     <div class="question_area">
@@ -167,6 +166,7 @@
 
 <script type="text/javascript">
 
+var flag = false;
 let modalElement;
 const options = ['Bag-Fill.gif', 'Big-Mac-Build.gif', 'Fries-Falling.gif'];
 const randomIndex = Math.floor(Math.random() * options.length);
@@ -174,6 +174,7 @@ const selectedOption = options[randomIndex];
 const content = `<img src="${selectedOption}" width=auto height="400">
                 <h1><br>読み込み中です．<br>しばらくお待ちください．</h1>`;
 openModalWindow(content);
+flag = true;
 
 var number;
 
@@ -194,8 +195,9 @@ var number;
         const randomIndex = Math.floor(Math.random() * options.length);
         const selectedOption = options[randomIndex];
         const content = `<img src="${selectedOption}" width=auto height="400">
-                <h1><br>送信しました．<br><br>次のクイズが始まるまで<br>しばらくお待ちください．</h1>`;
+                <h1><br>送信しました．<br><br>次のクイズが始まるまで、<br>しばらくお待ちください．</h1>`;
         openModalWindow(content);
+        flag = true;
         document.getElementById('ans').value = "";
     }
 
@@ -218,12 +220,19 @@ var number;
         .then((response) => response.json())
         .then((data) => {
             Question_Data = data;
-            number = Question_Data["Show_No"];
-            if(number == "1"){
-                document.getElementsByClassName("inner").innerHTML = "現在実施中のクイズはありません．";
+            if(Question_Data["Show_No"] == "1"){
+                if(flag == false){
+                    const content = `<img src="${selectedOption}" width=auto height="400">
+                    <h1><br>送信しました．<br><br>次のクイズが始まるまで、<br>しばらくお待ちください．</h1>`;
+                    openModalWindow(content);
+                    flag = true;
+                }
+                document.querySelector('.modal .inner h1').innerHTML = "現在実施中のクイズはありません．";
             }else if(number != Question_Data["Show_No"]){
                  closeModalWindow(); 
+                 flag = false;
             }
+            number = Question_Data["Show_No"];
             document.getElementsByClassName("question_area")[0].textContent = Question_Data[Question_Data["Show_No"]];
         });
     }, 5000);
