@@ -108,7 +108,40 @@
         line-height: 30px;
     }
 
+
+    .modal {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        } .modal .inner {
+            width: 90%;
+            height: 90%;
+            background-color: rgb(255, 255, 255);
+            margin: 10px;
+            display: block;
+            border-radius: 5px;
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #333;
+            font-size: 1.5rem;
+            animation: fadeInAnimation 200ms ease-out;
+        }
+
 </style>
+
 
 <body>
 
@@ -131,11 +164,53 @@
     </a>
 </body>
 
+
 <script type="text/javascript">
 
+let modalElement;
+const options = ['Bag-Fill.gif', 'Big-Mac-Build.gif', 'Fries-Falling.gif'];
+const randomIndex = Math.floor(Math.random() * options.length);
+const selectedOption = options[randomIndex];
+const content = `<img src="${selectedOption}" width=auto height="400">
+                <h1><br>読み込み中です．<br>しばらくお待ちください．</h1>`;
+openModalWindow(content);
+
+var number;
+
     function submit_Button_Click(){
-        alert('Click');
+        var data = {
+            columnNumber: number + 2,
+            answer: document.getElementById('ans').value
+        }; // POSTするデータを定義
+
+        var url = "https://script.google.com/macros/s/AKfycbx-FoSkJHN19OLGv0lst35cVRlSXdty63jLVu-rLlA_676b-zZPsEHno6ATj-D1AEN1JQ/exec";
+        fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        }).then((response) => {});
+
+
+        const options = ['Bag-Fill.gif', 'Big-Mac-Build.gif', 'Fries-Falling.gif'];
+        const randomIndex = Math.floor(Math.random() * options.length);
+        const selectedOption = options[randomIndex];
+        const content = `<img src="${selectedOption}" width=auto height="400">
+                <h1><br>送信しました．<br><br>次のクイズが始まるまで<br>しばらくお待ちください．</h1>`;
+        openModalWindow(content);
+        document.getElementById('ans').value = "";
     }
+
+
+    var currentDate = new Date();
+    var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    function zeroPad(number) { return number < 10 ? '0' + number : number; }
+    var formattedDate = currentDate.getFullYear() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getDate() + '(' + daysOfWeek[currentDate.getDay()] + ') ' + zeroPad(currentDate.getHours()) + ':' + zeroPad(currentDate.getMinutes()) + ':' + zeroPad(currentDate.getSeconds());
+    var data = { Access_Log: "On " + formattedDate + ", access"}
+    var url = "https://script.google.com/macros/s/AKfycbwgbduvv4AYtgg3blB5b4rEcFehkwEP9lwlyH8Xw8lK3wH5JYSsnfKmVXubpuCR2FJ4/exec";
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }).then((response) => {});
+
 
     setInterval(() => {
         var Question_Data = "https://script.google.com/macros/s/AKfycbxNCGIPO9cEiDcqUhY9Fyp7ct3HkPsD0NoETqmIo6d1PGzZRl4ZKFaR6PmhVrteaW8X3Q/exec";
@@ -143,45 +218,33 @@
         .then((response) => response.json())
         .then((data) => {
             Question_Data = data;
-            console.log(Question_Data[Question_Data["Show_No"]]);
-
+            if(number != Question_Data["Show_No"]){
+                 closeModalWindow(); 
+            }else if(number == 1){
+                //document.getElementsByClassName("msg").innerHTML = "現在実施中のクイズはありません．";
+            }
+            number = Question_Data["Show_No"];
             document.getElementsByClassName("question_area")[0].textContent = Question_Data[Question_Data["Show_No"]];
-        })
-        .catch((error) => {
-            console.log("接続不可．");
         });
     }, 5000);
-    
 
-    var Question_Data = "https://script.google.com/macros/s/AKfycbxNCGIPO9cEiDcqUhY9Fyp7ct3HkPsD0NoETqmIo6d1PGzZRl4ZKFaR6PmhVrteaW8X3Q/exec";
-    fetch(Question_Data)
-    .then((response) => response.json())
-    .then((data) => {
-        Question_Data = data;
-        console.log(Question_Data[Question_Data["Show_No"]]);
 
-        document.getElementsByClassName("question_area")[0].textContent = Question_Data[Question_Data["Show_No"]];
-    })
-    .catch((error) => {
-        console.log("接続不可．");
-    });
-    
-    
-    function showTime() {
-	    var now = new Date();
-	    var res = "" + now.getFullYear() + "/" + padZero(now.getMonth() + 1) + 
-		"/" + padZero(now.getDate()) + " " + padZero(now.getHours()) + ":" + 
-		padZero(now.getMinutes()) + ":" + padZero(now.getSeconds());
-	    return res;
-    } function padZero(num) {
-	    var result;
-	    if (num < 10) {
-		    result = "0" + num;
-	    } else {
-		    result = "" + num;
-	    }
-	    return result;
+    function openModalWindow(content) {
+        modalElement = document.createElement('msg');
+        modalElement.classList.add('modal');
+
+        const innerElement = document.createElement('msg');
+        innerElement.classList.add('inner');
+        innerElement.innerHTML = content;
+        modalElement.appendChild(innerElement);
+        document.body.appendChild(modalElement);
+    } function closeModalWindow() {
+        if (modalElement) {
+            document.body.removeChild(modalElement);
+            modalElement = null;
+        }
     }
+
 </script>
 
 </html>
